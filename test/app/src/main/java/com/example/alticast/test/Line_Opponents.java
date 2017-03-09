@@ -15,6 +15,7 @@ public class Line_Opponents { //the object class that controls the line opponent
         private double ySpeedRandom;//the variable that controls the randomly generated starting y-speeds
         private double ySpeedRandomChanger;//the variable that controls the rate at which the y-variable changes (movement in the 'y')
         private String word=null;
+        private TextView t;
 
 
         public Line_Opponents(double x_coor, double y_coor, double startXCoor, double startYCoor, int level){ //constructor for the line

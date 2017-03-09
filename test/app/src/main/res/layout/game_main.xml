@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/game_main">
+        <ListView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/listview"></ListView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <com.example.alticast.test.GonSurfaceView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/gameView"/>
+        </FrameLayout>
+
+</LinearLayout>

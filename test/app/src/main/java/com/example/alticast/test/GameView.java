@@ -20,6 +20,7 @@ package com.example.alticast.test;
         import android.widget.Button;
         import android.widget.FrameLayout;
         import android.widget.LinearLayout;
+        import android.widget.ListView;
         import android.widget.TextView;
 
         import org.w3c.dom.TypeInfo;
@@ -29,6 +30,7 @@ package com.example.alticast.test;
         import java.io.InputStream;
         import java.lang.reflect.Type;
         import java.util.ArrayList;
+        import java.util.HashMap;
 
 /**
  * Created by dongyunkam on 2017. 3. 3..
@@ -70,23 +72,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap wordMissile;
     //img variable in menu
 
+    private HashMap<String,TextView> temphash = new HashMap<>();
+    private Context context;
 
     //game setting
     boolean playGame = true;
 
+    boolean imageSet = true;
 
-    public GameView(Context context) {
-        super(context);
+
+    public GameView(Context context_) {
+        super(context_);
+
+        context = context_;
+
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
 
-        Display display = ((WindowManager) context.getSystemService(context.WINDOW_SERVICE)).getDefaultDisplay();
-        Width = display.getWidth();
-        Height = display.getHeight();
+
+
+        /*
         planetSurfaceSize=(int)(Height/5.5);
         Score ="Score: ";
         HealthBarSize = Height/24;
-
+*/
 
 
         String data =null;
@@ -115,6 +124,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
+
+
+        /*
         planet = new World(Width, Height,word_data);
 
 
@@ -133,7 +145,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         GrayPaint.setStrokeWidth(80);
         BlackPaint.setStrokeWidth(80);
         GreenPaint.setTextSize(Width/10);
-
+*/
 
         //img load
         missileDishImgR = BitmapFactory.decodeResource(context.getResources(), R.drawable.missile_dish);
@@ -142,8 +154,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         planetSurface = BitmapFactory.decodeResource(context.getResources(), R.drawable.planet_surface101);
         healthBar = BitmapFactory.decodeResource(context.getResources(),R.drawable.health_bar);
         missile = BitmapFactory.decodeResource(context.getResources(),R.drawable.missilesammo101);
-        wordMissile =BitmapFactory.decodeResource(context.getResources(),R.drawable.word_missile);
-
+//        wordMissile =BitmapFactory.decodeResource(context.getResources(),R.drawable.word_missile);
 
 
         explosionSplit = new Bitmap[12];
@@ -152,11 +163,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
          exH=explosionImg.getHeight()/4-30;
 
 
-        planetSurface = Bitmap.createScaledBitmap(planetSurface, Width, planetSurfaceSize, true);
-        healthBar = Bitmap.createScaledBitmap(healthBar,Width,HealthBarSize,true);
-        missile = Bitmap.createScaledBitmap(missile,Width/30,HealthBarSize,true);
-        missileDishImgR = Bitmap.createScaledBitmap(missileDishImgR,2*HealthBarSize,2*HealthBarSize,true);
-        wordMissile =Bitmap.createScaledBitmap(wordMissile,Width/3,Height/8,true);
+//      wordMissile =Bitmap.createScaledBitmap(wordMissile,Width/3,Height/8,true);
 
         for(int i=0;i<12;i++)
         {
@@ -171,16 +178,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             explosionSplit[i]=Bitmap.createScaledBitmap(explosionSplit[i],explosionSplit[i].getWidth()/2,explosionSplit[i].getHeight()/2,true);
         }
 
-        Matrix sideInversion = new Matrix();
-        sideInversion.setScale(-1, 1);
-        missileDishImgL = Bitmap.createBitmap(missileDishImgR, 0, 0,
-                missileDishImgR.getWidth(), missileDishImgR.getHeight(), sideInversion, false);
+
 
         mThread = new GameThread(context, holder);
 
 
-
-
+        System.out.println("111111111111");
 
 
     }
@@ -250,7 +253,48 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         if (canvas != null) {
 
                             synchronized (mHolder) {
+                                if(imageSet)
+                                {
+                                    Width = canvas.getWidth();
+                                    Height=canvas.getHeight();
+
+                                    planet = new World(Width, Height,word_data);
+
+                                    GreenPaint = new Paint();
+                                    redPaint = new Paint();
+                                    bluePaint = new Paint();
+                                    GrayPaint = new Paint();
+                                    BlackPaint = new Paint();
+                                    BlackPaint.setColor(Color.BLACK);
+                                    GrayPaint.setColor(Color.DKGRAY);
+                                    redPaint.setColor(Color.RED);
+                                    bluePaint.setColor(Color.BLUE);
+                                    GreenPaint.setColor(Color.GREEN);
+                                    redPaint.setStrokeWidth(20);
+                                    bluePaint.setStrokeWidth(20);
+                                    GrayPaint.setStrokeWidth(80);
+                                    BlackPaint.setStrokeWidth(80);
+                                    GreenPaint.setTextSize(Width/10);
+
+                                    planetSurfaceSize=(int)(Height/5.5);
+                                    Score ="Score: ";
+                                    HealthBarSize = Height/24;
+                                    planetSurface = Bitmap.createScaledBitmap(planetSurface,Width , planetSurfaceSize, true);
+                                    healthBar = Bitmap.createScaledBitmap(healthBar,Width,HealthBarSize,true);
+                                    missile = Bitmap.createScaledBitmap(missile,Width/30,HealthBarSize,true);
+                                    missileDishImgR = Bitmap.createScaledBitmap(missileDishImgR,2*HealthBarSize,2*HealthBarSize,true);
+
+
+
+                                    Matrix sideInversion = new Matrix();
+                                    sideInversion.setScale(-1, 1);
+                                    missileDishImgL = Bitmap.createBitmap(missileDishImgR, 0, 0,
+                                            missileDishImgR.getWidth(), missileDishImgR.getHeight(), sideInversion, false);
+
+                                    imageSet=false;
+                                }
                                 calc();
+
                                 canvas = Draw(canvas);
                             }
                         }
@@ -263,6 +307,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+
 
 
 
@@ -364,7 +409,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawBitmap(planetSurface, 0, Height - planetSurfaceSize, null);
 
 
-
         for(int i=0; i<planet.getMissiles().size();i++)
         {
             Line_Missiles tempMissile = planet.getMissiles().get(i);
@@ -396,7 +440,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for(int x=0;x<planet.getOppo().size();x++) {//for loop runs through the line opponents vector and draws every line in the vector
             Line_Opponents temp = (Line_Opponents) planet.getOppo().get(x);
             //canvas.drawLine((int) temp.getStartXCoor(), (int) temp.getStartYCoor(), (int) temp.getXCoor(), (int) temp.getYCoor(), redPaint);
-            canvas.drawBitmap(wordMissile,(int)(temp.getXCoor()-wordMissile.getWidth()/2),(int)(temp.getYCoor()-wordMissile.getHeight()/2),null);
+           // canvas.drawBitmap(wordMissile,(int)(temp.getXCoor()-wordMissile.getWidth()/2),(int)(temp.getYCoor()-wordMissile.getHeight()/2),null);
 
             canvas.drawText(temp.getWord(),(int)temp.getXCoor(),(int)temp.getYCoor(),GreenPaint);
 

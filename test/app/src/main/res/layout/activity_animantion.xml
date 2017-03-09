@@ -9,20 +9,5 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.alticast.test.animantionActivity"
     android:id="@+id/animation">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/one"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/two"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/three"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/four"/>
+
 </RelativeLayout>
